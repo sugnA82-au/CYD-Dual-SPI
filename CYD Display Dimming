@@ -1,0 +1,76 @@
+ESP32 CYD Auto-Brightness Logic
+
+
+Pins:
+
++ LDR (Input): GPIO 34
+
++ Backlight (PWM Output): GPIO 21
+
+
+
+The LDR is mounted on the pcb next to the screen. The screen's backlight bleeds into the sensor.
+
++ The sensor never reads 4095 (dark value)
+
++ Typical Range: 0 - ~170
+
++ To fix, need tp constrain the mapping range to this small window.
+
+
+//Globals
+
+#define CYD_LDR 34
+
+#define CYD_BL  21
+
+
+// Settings
+
+#define MIN_BRIGHTNESS 20   // Never go full black
+
+#define MAX_BRIGHTNESS 255
+
+#define SENSOR_MAX_DARK 170 // CALIBRATE THIS! (Value when sensor is covered)
+
+float smoothedLight = 0;    // For animation/smoothing
+
+
+// Setup
+
+
+pinMode(CYD_LDR, INPUT);
+
+pinMode(CYD_BL, OUTPUT);
+
+analogWrite(CYD_BL, MAX_BRIGHTNESS); // Start On
+
+
+// Loop Logic
+
+
+int raw = analogRead(CYD_LDR);
+
+// Smoothing Hysteresis
+
+// 95% old value, 5% new value = Smooth transition
+
+smoothedLight = (smoothedLight * 0.95) + ((float)raw * 0.05);
+
+// Constrain to actual hardware limits
+
+int cleanReading = constrain((int)smoothedLight, 0, SENSOR_MAX_DARK);
+
+// Map & Invert
+
+// Input: 0 (Bright) -> Output: 255 (Bright Screen)
+
+// Input: 170 (Dark) -> Output: 20 (Dim Screen)
+
+int target = map(cleanReading, 0, SENSOR_MAX_DARK, MAX_BRIGHTNESS, MIN_BRIGHTNESS);
+
+// Apply
+
+analogWrite(CYD_BL, target);
+
+delay(10);
