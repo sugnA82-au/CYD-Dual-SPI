@@ -3,15 +3,15 @@
 #include <XPT2046_Touchscreen.h>
 #include <SPI.h>
 
-// --- HARDWARE DEFINITIONS ---
-// The "Dual SPI" Pinout
+// HARDWARE DEFINITIONS
+// Dual SPI Pinout
 #define TOUCH_CLK  25
 #define TOUCH_MOSI 32
 #define TOUCH_MISO 39
 #define TOUCH_CS   33
 #define TOUCH_IRQ  36
 
-// --- OBJECTS ---
+// OBJECTS
 TFT_eSPI tft = TFT_eSPI(); 
 
 // Create a separate SPI bus instance for the Touch Controller
@@ -21,11 +21,11 @@ XPT2046_Touchscreen touch(TOUCH_CS, TOUCH_IRQ);
 void setup() {
   Serial.begin(115200);
   
-  // 1. Start the Second SPI Bus (The "Touch Highway")
-  // We use HSPI because VSPI is likely used by the Screen
+  // Start the Second SPI Bus for touch
+  // Use HSPI because VSPI is likely used by the Screen
   touchSPI.begin(TOUCH_CLK, TOUCH_MISO, TOUCH_MOSI, TOUCH_CS);
   
-  // 2. Start Touch Controller using that specific bus
+  // Start Touch Controller using that specific bus
   if (!touch.begin(touchSPI)) {
     Serial.println("Touch Controller failed to start!");
   } else {
@@ -33,7 +33,7 @@ void setup() {
   }
   touch.setRotation(1); // Landscape
 
-  // 3. Start Screen
+  // Start Screen
   tft.init();
   tft.setRotation(1); 
   tft.fillScreen(TFT_BLACK);
@@ -54,8 +54,8 @@ void loop() {
   if (touch.touched()) {
     TS_Point p = touch.getPoint();
     
-    // --- CALIBRATION MAPPING ---
-    // Since we are using the raw XPT library, we map manually.
+    // CALIBRATION MAPPING
+    // Using the raw XPT library, we map manually.
     // These values are typical for this screen.
     // X: Left=200, Right=3700
     // Y: Top=240, Bottom=3800
