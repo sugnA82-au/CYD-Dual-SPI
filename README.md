@@ -9,5 +9,7 @@ Use of much bitbanging was used to map the spi bus to get reliable use of the di
 +++Layouts of Board for touch and display+++
 
 Screen: Standard VSPI (CLK 14, MOSI 13, MISO 12, CS 15)
+
 Touch: Separate HSPI (CLK 25, MOSI 32, MISO 39, CS 33)
+
 Library: TFT_eSPI for display and XPT2046_Touchscreen with a custom SPIClass for touch
