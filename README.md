@@ -26,6 +26,10 @@ Touch: XPT2046
 
 ### Pin Assignments
 
+<table>
+<tr>
+<td>
+
 **Display — VSPI**
 
 | Signal | GPIO |
@@ -38,6 +42,9 @@ Touch: XPT2046
 | RST    | —    |
 | BL     | 21   |
 
+</td>
+<td>
+
 **Touch — HSPI**
 
 | Signal | GPIO |
@@ -48,12 +55,19 @@ Touch: XPT2046
 | CS     | 33   |
 | IRQ    | 36   |
 
+</td>
+<td>
+
 **Other**
 
-| Signal | GPIO | Notes                              |
-|--------|------|------------------------------------|
-| LDR    | 34   | Ambient light sensor (auto-dim)    |
-| BL PWM | 21   | Shared with display backlight pin  |
+| Signal | GPIO | Notes                             |
+|--------|------|-----------------------------------|
+| LDR    | 34   | Ambient light sensor (auto-dim)   |
+| BL PWM | 21   | Shared with display backlight pin |
+
+</td>
+</tr>
+</table>
 
 ---
 
